@@ -5,7 +5,7 @@ const cors = require('cors');
 const rp = require('request-promise');
 
 // Custom Dependencies
-// const apiai = require('./apiai')
+const apiai = require('./apiai')
 
 const app = express();
 app.use(bodyParser.json());
