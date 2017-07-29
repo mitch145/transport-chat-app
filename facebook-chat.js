@@ -8,7 +8,14 @@ const callSendApi = messageData => {
       access_token: process.env.PAGE_ACCESS_TOKEN
     },
     method: 'POST',
-    json: messageData
+    json: {
+      recipient: {
+        id: senderID,
+      },
+      message: {
+        text: response.result.fulfillment.speech,
+      },
+    }
 
   })
     .catch((error) => (console.error(error)))
