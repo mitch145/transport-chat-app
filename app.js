@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const rp = require('request-promise');
 const apiai = require('apiai');
 
 

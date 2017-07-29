@@ -1,3 +1,6 @@
+// Vendor Dependencies
+const rp = require('request-promise');
+
 const callSendApi = messageData => {
   rp({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
