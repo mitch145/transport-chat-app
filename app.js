@@ -7,7 +7,7 @@ const config = require('./config');
 
 // Custom Dependencies
 const helpers = require('./helpers');
-const apiai = require('./apiai')
+// const apiai = require('./apiai')
 
 const app = express();
 app.use(bodyParser.json());
@@ -55,7 +55,7 @@ const callSendAPI = messageData => {
   rp({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {
-      access_token: config.pageAccessToken
+      access_token: process.env.PAGE_ACCESS_TOKEN
     },
     method: 'POST',
     json: messageData
