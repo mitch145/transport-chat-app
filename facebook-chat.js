@@ -22,5 +22,5 @@ const callSendApi = messageData => {
 }
 
 module.exports = {
-  callSendApi: callSendApi,
-} 
+  callSendApi,
+}

@@ -8,6 +8,7 @@ require('dotenv').config()
 
 // Custom Dependencies
 const facebookChat = require('./facebook-chat');
+const translate = require('./translate');
 
 const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 const app = express();
@@ -26,6 +27,8 @@ app.get('/v0/webhook', (req, res) => {
     res.sendStatus(403);
   }
 });
+
+
 
 app.post('/v0/webhook', (req, res) => {
   const data = req.body;
@@ -50,6 +53,18 @@ app.post('/v0/webhook', (req, res) => {
     res.sendStatus(200);
   }
 });
+
+app.post('/translate', async (req,res) => {
+  res.write("hello \n")
+  res.write("query")
+  // Encode
+  let { text, lang } = await translate.translate(req, res, "bonjour")
+  console.log(text, lang)
+  // Decode
+  let ret = await translate.translate(req, res, "hello", "fr")
+  console.log(ret.text)
+  res.end()
+})
 
 const receivedMessage = (event) => {
   console.log(event)

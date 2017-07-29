@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-regenerator",
+    ["module-resolver", {
+      "root": ["./"],
+      "alias": {
+        "test": "./test",
+        "underscore": "lodash"
+      }
+    }]
+  ],
+  "presets": ["es2015"]
+}
