@@ -7,7 +7,7 @@ const apiai = require('apiai');
 
 
 // Custom Dependencies
-const facebookChat = require('./facebookChat');
+const facebookChat = require('./facebook-chat');
 
 const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 const app = express();
