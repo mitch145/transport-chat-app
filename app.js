@@ -71,7 +71,9 @@ const receivedMessage = (event) => {
       recipient: {
         id: senderID,
       },
-      messageData: response.result.fulfillment.speech,
+      message:{
+        text: response.result.fulfillment.speech,
+      },
     })
 
   });
