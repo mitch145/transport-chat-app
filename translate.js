@@ -1,14 +1,18 @@
 // Vendor Dependencies
 const fetch = require('isomorphic-fetch')
 
-const translate = async (req, res, message, target="en") => {
-  const response = await fetch("https://translation.googleapis.com/language/translate/v2?key=AIzaSyBKO65TgERUuR8Njhp1JHckjaHOWKFVz78&q="+message+"&target="+target);
-  const resData = await response.json();
-  const data = resData.data.translations[0]
+const urlHead = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyBKO65TgERUuR8Njhp1JHckjaHOWKFVz78&q="
 
-  const text = data.translatedText
-  const lang = data.detectedSourceLanguage
-  return { text, lang }
+const translate = (req, res, message, target="en") => {
+  return fetch(urlHead+message+"&target="+target).then((response) => {
+    return response.json()
+  }).then((resData) => {
+    const data = resData.data.translations[0]
+
+    const text = data.translatedText
+    const lang = data.detectedSourceLanguage
+    return { text, lang }
+  })
 }
 
 module.exports = {

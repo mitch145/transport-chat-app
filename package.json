@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon --exec babel-node app.js --debug=3001"
+    "dev": "nodemon --debug=3001"
   },
   "repository": {
     "type": "git",

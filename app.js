@@ -52,7 +52,21 @@ app.post('/v0/webhook', (req, res) => {
   }
 });
 
-const receivedMessage = async (event) => {
+app.post('/translate', (req,res) => {
+  res.write("hello \n")
+  res.write("query")
+  // Encode
+  translate.translate(req, res, "bonjour").then((data) => {
+    console.log(data.text, data.lang)
+  })
+
+  // Decode
+  // let ret = translate.translate(req, res, "hello", "fr")
+  // console.log(ret.text)
+  res.end()
+})
+
+const receivedMessage = (event) => {
   console.log(event)
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
@@ -63,7 +77,12 @@ const receivedMessage = async (event) => {
 
   const messageText = message.text;
 
-  let { text, lang } = await translate.translate(req, res, messageText)
+  let text, lang;
+
+  translate.translate(req, res, messageText).then((data) => {
+    text = data.text;
+    lang = data.lang;
+  })
 
   let request = apiAIApp.textRequest(text, {
     sessionId: senderID
@@ -71,12 +90,15 @@ const receivedMessage = async (event) => {
 
 
 
-  request.on('response', async (response) => {
+  request.on('response', (response) => {
     console.log(response.result.fulfillment.speech);
 
-    let {text} = await translate.translate(req, res, response.result.fulfillment.speech, lang)
+    let textReturn;
+    translate.translate(req, res, response.result.fulfillment.speech, lang).then((data) => {
+      textReturn = data.text;
+    })
 
-    facebookChat.callSendApi(senderID, text)
+    facebookChat.callSendApi(senderID, textReturn)
 
   });
 
