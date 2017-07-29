@@ -4,10 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "babel app.js -d build; node build/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel *.js -d build; node build/app.js",
     "dev": "nodemon --exec babel-node app.js --debug=3001",
-    "build": "babel app.js -d build"
   },
   "repository": {
     "type": "git",
