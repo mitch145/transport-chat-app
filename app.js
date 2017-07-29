@@ -15,6 +15,30 @@ app.use(bodyParser.json());
 // Ping Server
 app.get('/', (req, res) => (res.send('Hello World')))
 
+app.post('/v0/webhook', (req, res) => {
+  const data = req.body;
+
+  // Make sure this is a page subscription
+  if (data.object === 'page') {
+
+    // Iterate over each entry - there may be multiple if batched
+    data.entry.forEach((entry) => {
+      const pageID = entry.id;
+      const timeOfEvent = entry.time;
+
+      // Iterate over each messaging event
+      entry.messaging.forEach((event) => {
+        if (event.message) {
+          receivedMessage(event);
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
+    res.sendStatus(200);
+  }
+});
+
 const receivedMessage = (event) => {
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
