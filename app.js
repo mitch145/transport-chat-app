@@ -66,8 +66,22 @@ app.post('/translate', (req,res) => {
   res.end()
 })
 
+app.post('/maps', (req,res) => {
+  res.write("hello \n")
+  res.write("query")
+  // Encode
+  maps.findroute().then((data) => {
+    console.log(data)
+  })
+
+  // Decode
+  // let ret = translate.translate(req, res, "hello", "fr")
+  // console.log(ret.text)
+  res.end()
+})
+
 const receivedMessage = (event) => {
-  console.log(event)
+  console.log("New message", event)
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
@@ -76,21 +90,24 @@ const receivedMessage = (event) => {
   const messageId = message.mid;
 
   const messageText = message.text;
+  console.log("Incoming (NAT)", messageText)
 
   let text, lang;
 
   translate.translate(messageText).then((data) => {
     text = data.text;
+    console.log("Incoming (ENG)", text)
     lang = data.lang;
 
-    console.log("senderID", senderID)
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
 
     request.on('response', (response) => {
       console.log(response.result.fulfillment.speech);
+      console.log("Outgoing (ENG)", response.result.fulfillment.speech)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
+      console.log("Outgoing (NAT)", text)
         facebookChat.callSendApi(senderID, data.text)
       })
 
