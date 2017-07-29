@@ -60,14 +60,6 @@ const receivedMessage = (event) => {
 
   const messageText = message.text;
   console.log("Received message: ", messageText)
-  callSendAPI({
-    recipient: {
-      id: senderID
-    },
-    message: {
-      text: messageText
-    },
-  })
 
   let request = apiAIApp.textRequest(messageText, {
     sessionId: senderID
