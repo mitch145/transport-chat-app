@@ -79,7 +79,7 @@ const receivedMessage = (event) => {
 
   let text, lang;
 
-  translate.translate(req, res, messageText).then((data) => {
+  translate.translate(messageText).then((data) => {
     text = data.text;
     lang = data.lang;
   })
