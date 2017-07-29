@@ -83,8 +83,8 @@ const receivedMessage = (event) => {
     text = data.text;
     lang = data.lang;
 
+    console.log("senderID", senderID)
     let request = apiAIApp.textRequest(text, {
-      console.log("senderID", senderID)
       sessionId: senderID
     });
 
