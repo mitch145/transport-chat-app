@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "babel-cli *.js -d build; node build/app.js",
+    "start": "babel-node *.js -d build; node build/app.js",
     "dev": "nodemon --exec babel-node app.js --debug=3001"
   },
   "repository": {
@@ -16,7 +16,7 @@
   "dependencies": {
     "apiai": "^4.0.3",
     "babel": "^6.23.0",
-    "babel-cli": "^6.22.2",
+    "babel-cli": "^6.24.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",
