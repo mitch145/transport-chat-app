@@ -61,7 +61,7 @@ const receivedMessage = (event) => {
   console.log("Received message: ", messageText)
   callSendAPI({
     recipient: {
-      id: senderId
+      id: senderID
     },
     message: {
       text: messageText
