@@ -54,18 +54,6 @@ app.post('/v0/webhook', (req, res) => {
   }
 });
 
-app.post('/translate', async (req,res) => {
-  res.write("hello \n")
-  res.write("query")
-  // Encode
-  let { text, lang } = await translate.translate(req, res, "bonjour")
-  console.log(text, lang)
-  // Decode
-  let ret = await translate.translate(req, res, "hello", "fr")
-  console.log(ret.text)
-  res.end()
-})
-
 const receivedMessage = async (event) => {
   console.log(event)
   const senderID = event.sender.id;
