@@ -14,89 +14,89 @@ app.use(bodyParser.json());
 // Ping Server
 app.get('/', (req, res) => (res.send('Hello World')))
 
-app.get('/v0/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === 'thisisatoken') {
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);
-  }
-});
+// app.get('/v0/webhook', (req, res) => {
+//   if (req.query['hub.mode'] === 'subscribe' &&
+//     req.query['hub.verify_token'] === 'thisisatoken') {
+//     console.log("Validating webhook");
+//     res.status(200).send(req.query['hub.challenge']);
+//   } else {
+//     console.error("Failed validation. Make sure the validation tokens match.");
+//     res.sendStatus(403);
+//   }
+// });
 
-app.post('/v0/webhook', (req, res) => {
-  const data = req.body;
+// app.post('/v0/webhook', (req, res) => {
+//   const data = req.body;
 
-  // Make sure this is a page subscription
-  if (data.object === 'page') {
+//   // Make sure this is a page subscription
+//   if (data.object === 'page') {
 
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach((entry) => {
-      const pageID = entry.id;
-      const timeOfEvent = entry.time;
+//     // Iterate over each entry - there may be multiple if batched
+//     data.entry.forEach((entry) => {
+//       const pageID = entry.id;
+//       const timeOfEvent = entry.time;
 
-      // Iterate over each messaging event
-      entry.messaging.forEach((event) => {
-        if (event.message) {
-          receivedMessage(event);
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
-    res.sendStatus(200);
-  }
-});
+//       // Iterate over each messaging event
+//       entry.messaging.forEach((event) => {
+//         if (event.message) {
+//           receivedMessage(event);
+//         } else {
+//           console.log("Webhook received unknown event: ", event);
+//         }
+//       });
+//     });
+//     res.sendStatus(200);
+//   }
+// });
 
-const receivedMessage = (event) => {
-  const senderID = event.sender.id;
-  const recipientID = event.recipient.id;
-  const timeOfMessage = event.timestamp;
-  const message = event.message;
+// const receivedMessage = (event) => {
+//   const senderID = event.sender.id;
+//   const recipientID = event.recipient.id;
+//   const timeOfMessage = event.timestamp;
+//   const message = event.message;
 
-  const messageId = message.mid;
+//   const messageId = message.mid;
 
-  const messageText = message.text;
+//   const messageText = message.text;
 
-  callSendAPI({
-    recipient: {
-      id: senderId
-    },
-    message: {
-      text: messageText
-    },
-  })
+//   callSendAPI({
+//     recipient: {
+//       id: senderId
+//     },
+//     message: {
+//       text: messageText
+//     },
+//   })
 
-  let request = apiai.textRequest(messageText, {
-    sessionId: senderID
-  });
+//   let request = apiai.textRequest(messageText, {
+//     sessionId: senderID
+//   });
 
-  request.on('response', (response) => {
-    console.log(response);
-  });
+//   request.on('response', (response) => {
+//     console.log(response);
+//   });
 
-  request.on('error', (error) => {
-    console.log(error);
-  });
+//   request.on('error', (error) => {
+//     console.log(error);
+//   });
 
-  request.end();
-}
+//   request.end();
+// }
 
 
-// Call Facebook send API
-const callSendAPI = messageData => {
-  rp({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {
-      access_token: process.env.PAGE_ACCESS_TOKEN
-    },
-    method: 'POST',
-    json: messageData
+// // Call Facebook send API
+// const callSendAPI = messageData => {
+//   rp({
+//     uri: 'https://graph.facebook.com/v2.6/me/messages',
+//     qs: {
+//       access_token: process.env.PAGE_ACCESS_TOKEN
+//     },
+//     method: 'POST',
+//     json: messageData
 
-  })
-    .catch((error) => (console.error(error)))
-}
+//   })
+//     .catch((error) => (console.error(error)))
+// }
 
 app.listen(process.env.PORT || 8080);
 console.log("The server is now running on port 8080.");
