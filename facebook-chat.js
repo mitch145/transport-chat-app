@@ -1,7 +1,7 @@
 // Vendor Dependencies
 const rp = require('request-promise');
 
-const callSendApi = messageData => {
+const callSendApi = senderID, messageData => {
   rp({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {
@@ -13,7 +13,7 @@ const callSendApi = messageData => {
         id: senderID,
       },
       message: {
-        text: response.result.fulfillment.speech,
+        text: messageData,
       },
     }
 
