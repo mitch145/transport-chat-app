@@ -6,7 +6,7 @@ const rp = require('request-promise');
 const apiai = require('apiai');
 
 // Custom Dependencies
-const apiai = apiai(process.env.API_AI_CLIENT_TOKEN);
+const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 
 const app = express();
 app.use(bodyParser.json());
@@ -69,7 +69,7 @@ const receivedMessage = (event) => {
     },
   })
 
-  let request = apiai.textRequest(messageText, {
+  let request = apiAIApp.textRequest(messageText, {
     sessionId: senderID
   });
 
