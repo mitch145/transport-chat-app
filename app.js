@@ -5,9 +5,11 @@ const cors = require('cors');
 const rp = require('request-promise');
 const apiai = require('apiai');
 
-// Custom Dependencies
-const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 
+// Custom Dependencies
+const facebookChat = require('./facebookChat');
+
+const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 const app = express();
 app.use(bodyParser.json());
 
@@ -59,7 +61,6 @@ const receivedMessage = (event) => {
   const messageId = message.mid;
 
   const messageText = message.text;
-  console.log("Received message: ", messageText)
 
   let request = apiAIApp.textRequest(messageText, {
     sessionId: senderID
@@ -76,20 +77,6 @@ const receivedMessage = (event) => {
   request.end();
 }
 
-
-// Call Facebook send API
-const callSendAPI = messageData => {
-  rp({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {
-      access_token: process.env.PAGE_ACCESS_TOKEN
-    },
-    method: 'POST',
-    json: messageData
-
-  })
-    .catch((error) => (console.error(error)))
-}
 
 app.listen(process.env.PORT || 8080);
 console.log("The server is now running on port 8080.");
