@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/.bin/babel *.js -d build; node build/app.js",
+    "start": "./node_modules/.bin/babel-node *.js -d build; node build/app.js",
     "dev": "nodemon --exec babel-node app.js --debug=3001"
   },
   "repository": {
@@ -15,6 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "apiai": "^4.0.3",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.22.2",
     "body-parser": "^1.17.2",
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",
@@ -22,8 +24,7 @@
     "express": "^4.15.3",
     "isomorphic-fetch": "^2.2.1",
     "request": "^2.81.0",
-    "request-promise": "^4.2.1",
-    "babel-cli": "^6.22.2"
+    "request-promise": "^4.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

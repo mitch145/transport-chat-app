@@ -15,7 +15,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Ping Server
-app.get('/', (req, res) => (res.send('Hello World')))
+app.get('/', (req, res) => (res.send('Hello World')));
 
 app.get('/v0/webhook', (req, res) => {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -27,8 +27,6 @@ app.get('/v0/webhook', (req, res) => {
     res.sendStatus(403);
   }
 });
-
-
 
 app.post('/v0/webhook', (req, res) => {
   const data = req.body;
