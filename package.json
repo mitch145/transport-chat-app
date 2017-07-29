@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/.bin/babel-node *.js -d build; node build/app.js",
+    "start": "babel *.js -d build; node build/app.js",
     "dev": "nodemon --exec babel-node app.js --debug=3001"
   },
   "repository": {
