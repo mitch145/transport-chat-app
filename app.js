@@ -56,7 +56,7 @@ app.post('/translate', (req,res) => {
   res.write("hello \n")
   res.write("query")
   // Encode
-  translate.translate(req, res, "bonjour").then((data) => {
+  translate.translate("bonjour").then((data) => {
     console.log(data.text, data.lang)
   })
 
@@ -94,7 +94,7 @@ const receivedMessage = (event) => {
     console.log(response.result.fulfillment.speech);
 
     let textReturn;
-    translate.translate(req, res, response.result.fulfillment.speech, lang).then((data) => {
+    translate.translate(response.result.fulfillment.speech, lang).then((data) => {
       textReturn = data.text;
     })
 
