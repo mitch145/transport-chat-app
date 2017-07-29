@@ -3,9 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const rp = require('request-promise');
+const apiai = require('apiai');
 
 // Custom Dependencies
-const apiai = require('./apiai')
+const apiai = apiai(process.env.API_AI_CLIENT_TOKEN);
 
 const app = express();
 app.use(bodyParser.json());
