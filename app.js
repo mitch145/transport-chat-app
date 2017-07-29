@@ -73,7 +73,7 @@ const receivedMessage = async (event) => {
 
 
 
-  request.on('response', (response) => {
+  request.on('response', async (response) => {
     console.log(response.result.fulfillment.speech);
 
     let {text} = await translate.translate(req, res, response.result.fulfillment.speech, lang)
