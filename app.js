@@ -6,7 +6,6 @@ const rp = require('request-promise');
 const config = require('./config');
 
 // Custom Dependencies
-const helpers = require('./helpers');
 // const apiai = require('./apiai')
 
 const app = express();
