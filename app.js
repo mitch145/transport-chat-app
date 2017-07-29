@@ -82,31 +82,33 @@ const receivedMessage = (event) => {
   translate.translate(messageText).then((data) => {
     text = data.text;
     lang = data.lang;
+
+    let request = apiAIApp.textRequest(text, {
+      sessionId: senderID
+    });
+
+    request.on('response', (response) => {
+      console.log(response.result.fulfillment.speech);
+
+      translate.translate(response.result.fulfillment.speech, lang).then((data) => {
+        facebookChat.callSendApi(senderID, data.text)
+      })
+
+
+    });
+
+    request.on('error', (error) => {
+      console.log(error);
+    });
+
+    request.end();
   })
 
-  let request = apiAIApp.textRequest(text, {
-    sessionId: senderID
-  });
 
 
 
-  request.on('response', (response) => {
-    console.log(response.result.fulfillment.speech);
 
-    let textReturn;
-    translate.translate(response.result.fulfillment.speech, lang).then((data) => {
-      textReturn = data.text;
-    })
 
-    facebookChat.callSendApi(senderID, textReturn)
-
-  });
-
-  request.on('error', (error) => {
-    console.log(error);
-  });
-
-  request.end();
 }
 
 
