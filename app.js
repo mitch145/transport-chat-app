@@ -77,13 +77,20 @@ const receivedMessage = (event) => {
 
   const messageText = message.text;
 
-  let request = apiAIApp.textRequest(messageText, {
+  let { text, lang } = await translate.translate(req, res, messageText)
+
+  let request = apiAIApp.textRequest(text, {
     sessionId: senderID
   });
 
+
+
   request.on('response', (response) => {
     console.log(response.result.fulfillment.speech);
-    facebookChat.callSendApi(senderID, response.result.fulfillment.speech)
+
+    let {text} = await translate.translate(req, res, response.result.fulfillment.speech, lang)
+
+    facebookChat.callSendApi(senderID, text)
 
   });
 
