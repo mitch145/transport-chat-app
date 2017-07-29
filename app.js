@@ -15,6 +15,17 @@ app.use(bodyParser.json());
 // Ping Server
 app.get('/', (req, res) => (res.send('Hello World')))
 
+app.get('/v0/webhook', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === 'thisisatoken') {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});
+
 app.post('/v0/webhook', (req, res) => {
   const data = req.body;
 
