@@ -6,7 +6,8 @@
   "scripts": {
     "start": "babel-node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node app.js --debug=3001"
+    "dev": "nodemon --exec babel-node app.js --debug=3001",
+    "prod": "babel app.js -d build; node build/app.js"
   },
   "repository": {
     "type": "git",
