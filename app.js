@@ -90,8 +90,9 @@ const receivedMessage = (event) => {
 
     request.on('response', (response) => {
       console.log(response.result.fulfillment.speech);
-
+      console.log('pre', senderID)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
+        console.log('post', senderID)
         facebookChat.callSendApi(senderID, data.text)
       })
 
