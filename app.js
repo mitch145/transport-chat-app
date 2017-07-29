@@ -66,7 +66,7 @@ app.post('/translate', async (req,res) => {
   res.end()
 })
 
-const receivedMessage = (event) => {
+const receivedMessage = async (event) => {
   console.log(event)
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
