@@ -68,7 +68,7 @@ const receivedMessage = (event) => {
 
   request.on('response', (response) => {
     console.log(response.result.fulfillment.speech);
-    callSendApi({
+    facebookChat.callSendApi({
       recipient: senderID,
       messageData: response.result.fulfillment.speech,
     })
