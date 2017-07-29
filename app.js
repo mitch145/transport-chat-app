@@ -25,7 +25,6 @@ app.get('/v0/webhook', (req, res) => {
 });
 
 app.post('/v0/webhook', (req, res) => {
-  console.log(req, res)
   const data = req.body;
 
   // Make sure this is a page subscription
@@ -50,6 +49,7 @@ app.post('/v0/webhook', (req, res) => {
 });
 
 const receivedMessage = (event) => {
+  console.log(event)
   const senderID = event.sender.id;
   const recipientID = event.recipient.id;
   const timeOfMessage = event.timestamp;
