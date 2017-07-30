@@ -119,9 +119,11 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
 
+    console.log("pre request")
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
+    console.log("post request")
 
     request.on('response', (response) => {
       console.log('LOOK_HERE',response.result)
