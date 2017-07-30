@@ -4,7 +4,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiai = require('apiai');
 require('dotenv').config()
+const firebase = require('firebase');
 
+var config = {
+    apiKey: process.env.FB_API_KEY,
+    databaseURL: process.env.FB_DB_URL,
+    projectId: process.env.FB_PID,
+  };
+firebase.initializeApp(config);
+var db = firebase.database();
 
 // Custom Dependencies
 const facebookChat = require('./facebook-chat');
@@ -81,17 +89,12 @@ app.post('/v0/message', (req, res) => {
 })
 
 app.post('/maps', (req,res) => {
-  // res.write("hello \n")
-  // res.write("query")
-  // Encode
-  maps.findRoute().then((data) => {
-    res.send(data)
+  const routes = maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
+    console.log(data)
+    db.ref('user/' + "fakeID").set({
+    routes: data
+  });
   })
-
-  // Decode
-  // let ret = translate.translate(req, res, "hello", "fr")
-  // console.log(ret.text)
-  // res.end()
 })
 
 const receivedMessage = (event) => {
