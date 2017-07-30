@@ -16,10 +16,6 @@ const findRoute = (origin, destination) => {
   })
 }
 
-const getCoords = () => {
-
-}
-
 module.exports = {
   findRoute
 }
