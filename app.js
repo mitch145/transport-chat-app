@@ -50,8 +50,10 @@ app.post('/v0/webhook', (req, res) => {
         if (event.message) {
           if (event.message.text) {
             receivedMessage(event);
-          } else if (event.message.attachments) {
+          } else if (event.message.attachments.coordinates) {
             receivedLocation(event);
+          } else {
+            console.log("Webhook received unknown event: ", event);
           }
         } else {
           console.log("Webhook received unknown event: ", event);
@@ -146,7 +148,7 @@ const receivedMessage = (event) => {
 }
 
 const receivedLocation = (event) => {
-  console.log(event.message.attachments)
+  console.log(event.message.attachments.coordinates)
 }
 
 
