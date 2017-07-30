@@ -66,11 +66,22 @@ app.post('/translate', (req,res) => {
   res.end()
 })
 
+app.post('/v0/message', (req, res) => {
+  receivedMessage({
+    sender: {
+      id: req.body.senderID
+    },
+    message: {
+      mid: 'messageID',
+      text: req.body.message
+    }
+  })
+  res.send('Received')
+})
+
 const receivedMessage = (event) => {
   console.log(event)
   const senderID = event.sender.id;
-  const recipientID = event.recipient.id;
-  const timeOfMessage = event.timestamp;
   const message = event.message;
 
   const messageId = message.mid;
