@@ -124,6 +124,7 @@ const receivedMessage = (event) => {
     });
 
     request.on('response', (response) => {
+      console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
           db.ref('user/' + "fakeID").set({
