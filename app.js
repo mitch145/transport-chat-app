@@ -150,7 +150,7 @@ const receivedMessage = (event) => {
     });
 
     request.on('error', (error) => {
-      console.log(error);
+      console.log('APIAI Response Error', error);
     });
 
     request.end();
