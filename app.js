@@ -126,7 +126,9 @@ const receivedMessage = (event) => {
     request.on('response', (response) => {
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
+        console.log("start location")
         maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
+          console.log("routes", data)
           db.ref('user/' + senderID).set({
             routes: data
           });
@@ -134,6 +136,7 @@ const receivedMessage = (event) => {
         db.ref('user/' + senderID).once('value', (snap) => {
           let routes = snap.val().routes
           let route = routes.splice(0, 1)
+          console.log("send a route", route)
           db.ref('user/' + senderID).update({
             routes
           });
