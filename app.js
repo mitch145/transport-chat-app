@@ -78,30 +78,38 @@ app.post('/translate', (req, res) => {
   res.end()
 })
 
-app.post('/v0/message', (req, res) => {
-  receivedMessage({
-    sender: {
-      id: req.body.senderID
-    },
-    message: {
-      mid: 'messageID',
-      text: req.body.message
-    }
-  })
-  res.send('Received')
+app.post('/maps', (req,res) => {
+
+  res.sendStatus(200)
 })
 
-app.post('/maps', (req, res) => {
-  const routes = maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
+app.post('/maps', (req,res) => {
+  maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
     db.ref('user/' + "fakeID").set({
       routes: data
     });
   })
+  res.sendStatus(200)
 })
+
+app.post('/route', (req,res) => {
+  db.ref('user/' + "fakeID").once('value', (snap) => {
+    let routes = snap.val().routes
+    let route = routes.splice(0, 1)
+    console.log(route)
+    db.ref('user/' + "fakeID").update({
+      routes
+    });
+  })
+  res.sendStatus(200)
+})
+
 
 const receivedMessage = (event) => {
   console.log("New message", event)
   const senderID = event.sender.id;
+  const recipientID = event.recipient.id;
+  const timeOfMessage = event.timestamp;
   const message = event.message;
 
   const messageId = message.mid;
