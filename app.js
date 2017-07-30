@@ -64,37 +64,6 @@ app.post('/v0/webhook', (req, res) => {
   }
 });
 
-app.post('/translate', (req, res) => {
-  res.write("hello \n")
-  res.write("query")
-  // Encode
-  translate.translate("bonjour").then((data) => {
-  })
-  res.end()
-})
-
-app.post('/maps', (req, res) => {
-  maps.findRoute("qld+central+station", "coolangatta").then((data) => {
-    console.log("routes", data)
-    db.ref('user/' + "nope").set({
-      routes: data
-    });
-  })
-  res.sendStatus(200)
-})
-
-app.post('/route', (req, res) => {
-  db.ref('user/' + "fakeID").once('value', (snap) => {
-    let routes = snap.val().routes
-    let route = routes.splice(0, 1)
-    console.log(route)
-    db.ref('user/' + "fakeID").update({
-      routes
-    });
-  })
-  res.sendStatus(200)
-})
-
 
 const receivedMessage = (event) => {
   console.log("New message", event)
@@ -119,19 +88,10 @@ const receivedMessage = (event) => {
     request.on('response', (response) => {
       console.log('LOOK_HERE', response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
-        facebookChat.callSendApi(senderID, "Let's begin.")
-        console.log("start location", response.result.parameters.commgames_location)
-        maps.findRoute("qld+central+station", "coolangatta").then((data) => {
-          console.log("routes", data)
-          db.ref('user/' + "nooooo").set({
-            routes: data
-          });
-          data.forEach((val) => {
-            translate.translate(val, lang).then((data) => {
-              facebookChat.callSendApi(senderID, data.text)
-            })
-          })
-        })
+        facebookChat.callSendApi(senderID, "Please send your location")
+        db.ref('user/' + senderID).update({
+          target: response.result.parameters.commgames_location
+        });
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
         translate.translate(response.result.fulfillment.speech, lang).then((data) => {
