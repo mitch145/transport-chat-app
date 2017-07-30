@@ -100,8 +100,6 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
 
-    const preText = text;
-
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
@@ -111,8 +109,7 @@ const receivedMessage = (event) => {
       console.log("Outgoing (ENG)", response.result.fulfillment.speech)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
       console.log("Outgoing (NAT)", text)
-        console.log(preText)
-        facebookChat.callSendApi(senderID, preText)
+        facebookChat.callSendApi(senderID, "<b>asd</b>")
       })
 
 
