@@ -135,7 +135,11 @@ const receivedMessage = (event) => {
           db.ref('user/' + "nooooo").set({
             routes: data
           });
-          facebookChat.callSendApi(senderID, data[0])
+          facebookChat.callSendApi(senderID, "Let's begin.")
+          data.forEach((val) => {
+            facebookChat.callSendApi(senderID, val)
+          })
+          facebookChat.callSendApi(senderID, "This concludes our interaction.")
         })
         // db.ref('user/' + senderID).once('value', (snap) => {
         //   let routes = snap.val().routes
@@ -147,7 +151,6 @@ const receivedMessage = (event) => {
         //   facebookChat.callSendApi(senderID, route)
         // })
 
-        facebookChat.callSendApi(senderID, "Are you ready?")
 
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
