@@ -109,7 +109,7 @@ const receivedMessage = (event) => {
       console.log("Outgoing (ENG)", response.result.fulfillment.speech)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
       console.log("Outgoing (NAT)", text)
-        facebookChat.callSendApi(senderID, "<b>asd</b>")
+        facebookChat.callSendApi(senderID, data.text)
       })
 
 
