@@ -7,15 +7,20 @@ require('dotenv').config()
 const firebase = require('firebase');
 
 var config = {
-    apiKey: process.env.FB_API_KEY,
-    databaseURL: process.env.FB_DB_URL,
-    projectId: process.env.FB_PID,
-  };
+  apiKey: process.env.FB_API_KEY,
+  databaseURL: process.env.FB_DB_URL,
+  projectId: process.env.FB_PID,
+};
 firebase.initializeApp(config);
 var db = firebase.database();
 
 // Custom Dependencies
-const facebookChat = require('./facebook-chat');
+const facebookChat;
+if(process.env.NODE_ENV === 'dev') {
+  facebookChat = require('./facebook-chat-mock');
+} else if (process.env.NODE_ENV === 'prod') {
+  facebookChat = require('./facebook-chat');
+}
 const translate = require('./translate');
 const maps = require('./maps');
 
@@ -61,12 +66,11 @@ app.post('/v0/webhook', (req, res) => {
   }
 });
 
-app.post('/translate', (req,res) => {
+app.post('/translate', (req, res) => {
   res.write("hello \n")
   res.write("query")
   // Encode
   translate.translate("bonjour").then((data) => {
-    console.log(data.text, data.lang)
   })
 
   // Decode
@@ -88,12 +92,11 @@ app.post('/v0/message', (req, res) => {
   res.send('Received')
 })
 
-app.post('/maps', (req,res) => {
+app.post('/maps', (req, res) => {
   const routes = maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
-    console.log(data)
     db.ref('user/' + "fakeID").set({
-    routes: data
-  });
+      routes: data
+    });
   })
 })
 
@@ -119,14 +122,15 @@ const receivedMessage = (event) => {
     });
 
     request.on('response', (response) => {
-      console.log(response.result.fulfillment.speech);
-      console.log("Outgoing (ENG)", response.result.fulfillment.speech)
-      translate.translate(response.result.fulfillment.speech, lang).then((data) => {
-      console.log("Outgoing (NAT)", text)
-        facebookChat.callSendApi(senderID, data.text)
-      })
-
-
+      if (action === 'location.send' && response.result.parameters.commgames_location) {
+        // Do your maps shit
+      } else {
+        console.log("Outgoing (ENG)", response.result.fulfillment.speech)
+        translate.translate(response.result.fulfillment.speech, lang).then((data) => {
+          console.log("Outgoing (NAT)", text)
+          facebookChat.callSendApi(senderID, data.text)
+        })
+      }
     });
 
     request.on('error', (error) => {
