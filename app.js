@@ -9,6 +9,7 @@ require('dotenv').config()
 // Custom Dependencies
 const facebookChat = require('./facebook-chat');
 const translate = require('./translate');
+const maps = require('./maps');
 
 const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 const app = express();
@@ -67,17 +68,17 @@ app.post('/translate', (req,res) => {
 })
 
 app.post('/maps', (req,res) => {
-  res.write("hello \n")
-  res.write("query")
+  // res.write("hello \n")
+  // res.write("query")
   // Encode
-  maps.findroute().then((data) => {
-    console.log(data)
+  maps.findRoute().then((data) => {
+    res.send(data)
   })
 
   // Decode
   // let ret = translate.translate(req, res, "hello", "fr")
   // console.log(ret.text)
-  res.end()
+  // res.end()
 })
 
 const receivedMessage = (event) => {
@@ -99,6 +100,8 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
 
+    const preText = text;
+
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
@@ -108,7 +111,8 @@ const receivedMessage = (event) => {
       console.log("Outgoing (ENG)", response.result.fulfillment.speech)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
       console.log("Outgoing (NAT)", text)
-        facebookChat.callSendApi(senderID, data.text)
+        console.log(preText)
+        facebookChat.callSendApi(senderID, preText)
       })
 
 
