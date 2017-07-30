@@ -15,11 +15,11 @@ firebase.initializeApp(config);
 var db = firebase.database();
 
 // Custom Dependencies
-if(process.env.NODE_ENV === 'dev') {
-  const facebookChat = require('./facebook-chat-mock');
-} else if (process.env.NODE_ENV === 'prod') {
+// if(process.env.NODE_ENV === 'dev') {
+  // const facebookChat = require('./facebook-chat-mock');
+// } else if (process.env.NODE_ENV === 'prod') {
   const facebookChat = require('./facebook-chat');
-}
+// }
 const translate = require('./translate');
 const maps = require('./maps');
 
