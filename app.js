@@ -127,9 +127,9 @@ const receivedMessage = (event) => {
     console.log("post request")
 
     request.on('response', (response) => {
-      facebookChat.callSendApi(senderID, "Let's begin.")
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
+        facebookChat.callSendApi(senderID, "Let's begin.")
         console.log("start location", response.result.parameters.commgames_location)
         maps.findRoute("qld+central+station", "coolangatta").then((data) => {
           console.log("routes", data)
@@ -138,9 +138,10 @@ const receivedMessage = (event) => {
           });
           data.forEach((val) => {
             facebookChat.callSendApi(senderID, val)
+          }).then(() => {
+            facebookChat.callSendApi(senderID, "This concludes our interaction.")
           })
         })
-        facebookChat.callSendApi(senderID, "This concludes our interaction.")
         // db.ref('user/' + senderID).once('value', (snap) => {
         //   let routes = snap.val().routes
         //   let route = routes.splice(0, 1)
