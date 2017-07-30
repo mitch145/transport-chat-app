@@ -79,11 +79,6 @@ app.post('/translate', (req, res) => {
 })
 
 app.post('/maps', (req,res) => {
-
-  res.sendStatus(200)
-})
-
-app.post('/maps', (req,res) => {
   maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
     db.ref('user/' + "fakeID").set({
       routes: data
@@ -130,7 +125,20 @@ const receivedMessage = (event) => {
 
     request.on('response', (response) => {
       if (action === 'location.send' && response.result.parameters.commgames_location) {
-        // Do your maps shit
+        maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
+          db.ref('user/' + "fakeID").set({
+            routes: data
+          });
+        })
+        db.ref('user/' + "fakeID").once('value', (snap) => {
+          let routes = snap.val().routes
+          let route = routes.splice(0, 1)
+          db.ref('user/' + "fakeID").update({
+            routes
+          });
+          facebookChat.callSendApi(senderID, route)
+        })
+
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
         translate.translate(response.result.fulfillment.speech, lang).then((data) => {
