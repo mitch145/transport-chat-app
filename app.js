@@ -113,8 +113,8 @@ const receivedMessage = (event) => {
 }
 
 const receivedLocation = (event) => {
-  event.message.attachments[0].payload.coordinates.lat = "-27.402481"
-  event.message.attachments[0].payload.coordinates.long = "153.131299"
+  // event.message.attachments[0].payload.coordinates.lat = "-27.402481"
+  // event.message.attachments[0].payload.coordinates.long = "153.131299"
   origin = `${event.message.attachments[0].payload.coordinates.lat},${event.message.attachments[0].payload.coordinates.long}`;
   // console.log("start location", response.result.parameters.commgames_location)
   console.log("-=-=-=-=-=-=-")
