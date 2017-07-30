@@ -14,12 +14,7 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 
-// Custom Dependencies
-// if(process.env.NODE_ENV === 'dev') {
-  // const facebookChat = require('./facebook-chat-mock');
-// } else if (process.env.NODE_ENV === 'prod') {
-  const facebookChat = require('./facebook-chat');
-// }
+const facebookChat = require('./facebook-chat');
 const translate = require('./translate');
 const maps = require('./maps');
 
@@ -53,7 +48,7 @@ app.post('/v0/webhook', (req, res) => {
       entry.messaging.forEach((event) => {
         console.log('event123', event)
         if (event.message) {
-          if(event.message.text) {
+          if (event.message.text) {
             receivedMessage(event);
           } else if (event.message.attachments) {
             receivedLocation(event);
@@ -76,7 +71,7 @@ app.post('/translate', (req, res) => {
   res.end()
 })
 
-app.post('/maps', (req,res) => {
+app.post('/maps', (req, res) => {
   maps.findRoute("qld+central+station", "coolangatta").then((data) => {
     console.log("routes", data)
     db.ref('user/' + "nope").set({
@@ -86,7 +81,7 @@ app.post('/maps', (req,res) => {
   res.sendStatus(200)
 })
 
-app.post('/route', (req,res) => {
+app.post('/route', (req, res) => {
   db.ref('user/' + "fakeID").once('value', (snap) => {
     let routes = snap.val().routes
     let route = routes.splice(0, 1)
@@ -120,7 +115,7 @@ const receivedMessage = (event) => {
     console.log("post request")
 
     request.on('response', (response) => {
-      console.log('LOOK_HERE',response.result)
+      console.log('LOOK_HERE', response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         facebookChat.callSendApi(senderID, "Let's begin.")
         console.log("start location", response.result.parameters.commgames_location)
@@ -133,17 +128,6 @@ const receivedMessage = (event) => {
             facebookChat.callSendApi(senderID, val)
           })
         })
-        // db.ref('user/' + senderID).once('value', (snap) => {
-        //   let routes = snap.val().routes
-        //   let route = routes.splice(0, 1)
-        //   console.log("send a route", route)
-        //   db.ref('user/' + senderID).update({
-        //     routes
-        //   });
-        //   facebookChat.callSendApi(senderID, route)
-        // })
-
-
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
         translate.translate(response.result.fulfillment.speech, lang).then((data) => {
