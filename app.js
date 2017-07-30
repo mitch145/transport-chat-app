@@ -88,19 +88,10 @@ const receivedMessage = (event) => {
     request.on('response', (response) => {
       console.log('LOOK_HERE', response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
-        facebookChat.callSendApi(senderID, "Let's begin.")
-        console.log("start location", response.result.parameters.commgames_location)
-        maps.findRoute("qld+central+station", response.result.parameters.commgames_location).then((data) => {
-          console.log("routes", data)
-          db.ref('user/' + "nooooo").set({
-            routes: data
-          });
-          data.forEach((val) => {
-            translate.translate(val, lang).then((data) => {
-              facebookChat.callSendApi(senderID, data.text)
-            })
-          })
-        })
+        facebookChat.callSendApi(senderID, "Please send your location")
+        db.ref('user/' + "nooooo").set({
+          target: response.result.parameters.commgames_location
+        });
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
         translate.translate(response.result.fulfillment.speech, lang).then((data) => {
