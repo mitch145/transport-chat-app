@@ -49,19 +49,18 @@ app.post('/v0/webhook', (req, res) => {
 
     // Iterate over each entry - there may be multiple if batched
     data.entry.forEach((entry) => {
-      const pageID = entry.id;
-      const timeOfEvent = entry.time;
-
       // Iterate over each messaging event
       entry.messaging.forEach((event) => {
         console.log('event123', event)
-        // if (event.message.attachments) {
-
-        // } else if (event.message) {
-        //   receivedMessage(event);
-        // } else {
-        //   console.log("Webhook received unknown event: ", event);
-        // }
+        if (event.message) {
+          if(event.message.text) {
+            receivedMessage(event);
+          } else if (event.message.attachments) {
+            receivedLocation(event);
+          }
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
       });
     });
     res.sendStatus(200);
@@ -74,10 +73,6 @@ app.post('/translate', (req, res) => {
   // Encode
   translate.translate("bonjour").then((data) => {
   })
-
-  // Decode
-  // let ret = translate.translate(req, res, "hello", "fr")
-  // console.log(ret.text)
   res.end()
 })
 
@@ -107,13 +102,8 @@ app.post('/route', (req,res) => {
 const receivedMessage = (event) => {
   console.log("New message", event)
   const senderID = event.sender.id;
-  const recipientID = event.recipient.id;
-  const timeOfMessage = event.timestamp;
-  const message = event.message;
-
-  const messageId = message.mid;
-
-  const messageText = message.text;
+  // const message = event.message;
+  const messageText = event.message.text;
   console.log("Incoming (NAT)", messageText)
 
   let text, lang;
@@ -169,12 +159,10 @@ const receivedMessage = (event) => {
 
     request.end();
   })
+}
 
-
-
-
-
-
+const receivedLocation = (event) => {
+  console.log(event.message.attachments)
 }
 
 
