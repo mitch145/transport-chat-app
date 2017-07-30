@@ -127,7 +127,7 @@ const receivedMessage = (event) => {
             routes: data
           });
           data.forEach((val) => {
-            translate.translate(val).then((data) => {
+            translate.translate(val, lang).then((data) => {
               console.log(data.text);
             })
             facebookChat.callSendApi(senderID, val)
