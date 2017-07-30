@@ -136,7 +136,17 @@ const receivedMessage = (event) => {
             routes: data
           });
         })
-        
+        // db.ref('user/' + senderID).once('value', (snap) => {
+        //   let routes = snap.val().routes
+        //   let route = routes.splice(0, 1)
+        //   console.log("send a route", route)
+        //   db.ref('user/' + senderID).update({
+        //     routes
+        //   });
+        //   facebookChat.callSendApi(senderID, route)
+        // })
+
+        facebookChat.callSendApi(senderID, "Are you ready?")
 
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
