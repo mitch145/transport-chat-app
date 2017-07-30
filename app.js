@@ -112,9 +112,9 @@ const receivedMessage = (event) => {
 const receivedLocation = (event) => {
   origin = `${event.message.attachments[0].payload.coordinates.lat},${event.message.attachments[0].payload.coordinates.long}`;
   // console.log("start location", response.result.parameters.commgames_location)
-  db.ref('user/' + event.sender.id).once((snap) => {
-    console.log(snap.val().target)
-  })
+  // db.ref('user/' + event.sender.id).once((snap) => {
+  //   console.log(snap.val().target)
+  // })
 
 }
 
