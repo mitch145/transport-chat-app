@@ -50,7 +50,7 @@ app.post('/v0/webhook', (req, res) => {
         if (event.message) {
           if (event.message.text) {
             receivedMessage(event);
-          } else if (event.message.attachments.coordinates) {
+          } else if (event.message.attachments) {
             receivedLocation(event);
           } else {
             console.log("Webhook received unknown event: ", event);
