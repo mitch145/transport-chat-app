@@ -78,6 +78,9 @@ const receivedMessage = (event) => {
     text = data.text;
     console.log("Incoming (ENG)", text)
     lang = data.lang;
+    db.ref('user/' + senderID).update({
+      lang: data.lang;
+    });
 
     console.log("pre request")
     let request = apiAIApp.textRequest(text, {
@@ -120,7 +123,7 @@ const receivedLocation = (event) => {
           routes: data
         });
         data.forEach((val) => {
-          translate.translate(val, lang).then((data) => {
+          translate.translate(val, snap.val().lang).then((data) => {
             facebookChat.callSendApi(event.sender.id, data.text)
           })
         })
