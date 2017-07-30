@@ -115,6 +115,16 @@ const receivedLocation = (event) => {
   console.log("-=-=-=-=-=-=-")
   db.ref('user/' + event.sender.id).once("value", (snap) => {
       facebookChat.callSendApi(event.sender.id, snap.val().target)
+      maps.findRoute(origin, snap.val().target).then((data) => {
+        db.ref('user/' + event.sender.id).set({
+          routes: data
+        });
+        data.forEach((val) => {
+          translate.translate(val, lang).then((data) => {
+            facebookChat.callSendApi(event.sender.id, data.text)
+          })
+        })
+      })
   })
 
 }
