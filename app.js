@@ -9,6 +9,7 @@ require('dotenv').config()
 // Custom Dependencies
 const facebookChat = require('./facebook-chat');
 const translate = require('./translate');
+const maps = require('./maps');
 
 const apiAIApp = apiai(process.env.API_AI_CLIENT_TOKEN);
 const app = express();
@@ -79,29 +80,46 @@ app.post('/v0/message', (req, res) => {
   res.send('Received')
 })
 
+app.post('/maps', (req,res) => {
+  // res.write("hello \n")
+  // res.write("query")
+  // Encode
+  maps.findRoute().then((data) => {
+    res.send(data)
+  })
+
+  // Decode
+  // let ret = translate.translate(req, res, "hello", "fr")
+  // console.log(ret.text)
+  // res.end()
+})
+
 const receivedMessage = (event) => {
-  console.log(event)
+  console.log("New message", event)
   const senderID = event.sender.id;
   const message = event.message;
 
   const messageId = message.mid;
 
   const messageText = message.text;
+  console.log("Incoming (NAT)", messageText)
 
   let text, lang;
 
   translate.translate(messageText).then((data) => {
     text = data.text;
+    console.log("Incoming (ENG)", text)
     lang = data.lang;
 
-    console.log("senderID", senderID)
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
 
     request.on('response', (response) => {
       console.log(response.result.fulfillment.speech);
+      console.log("Outgoing (ENG)", response.result.fulfillment.speech)
       translate.translate(response.result.fulfillment.speech, lang).then((data) => {
+      console.log("Outgoing (NAT)", text)
         facebookChat.callSendApi(senderID, data.text)
       })
 
