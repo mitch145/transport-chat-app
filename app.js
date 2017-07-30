@@ -135,6 +135,7 @@ const receivedMessage = (event) => {
           db.ref('user/' + "nooooo").set({
             routes: data
           });
+          facebookChat.callSendApi(senderID, data[0])
         })
         // db.ref('user/' + senderID).once('value', (snap) => {
         //   let routes = snap.val().routes
