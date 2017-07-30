@@ -119,22 +119,27 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
 
+    console.log("pre request")
     let request = apiAIApp.textRequest(text, {
       sessionId: senderID
     });
+    console.log("post request")
 
     request.on('response', (response) => {
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
-        maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
-          db.ref('user/' + "fakeID").set({
+        console.log("start location", response.result.parameters.commgames_location)
+        maps.findRoute("qld+central+station", response.result.parameters.commgames_location).then((data) => {
+          console.log("routes", data)
+          db.ref('user/' + senderID).set({
             routes: data
           });
         })
-        db.ref('user/' + "fakeID").once('value', (snap) => {
+        db.ref('user/' + senderID).once('value', (snap) => {
           let routes = snap.val().routes
           let route = routes.splice(0, 1)
-          db.ref('user/' + "fakeID").update({
+          console.log("send a route", route)
+          db.ref('user/' + senderID).update({
             routes
           });
           facebookChat.callSendApi(senderID, route)
