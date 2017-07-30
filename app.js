@@ -121,7 +121,7 @@ const receivedMessage = (event) => {
     });
 
     request.on('response', (response) => {
-      if (action === 'location.send' && response.result.parameters.commgames_location) {
+      if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         // Do your maps shit
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
