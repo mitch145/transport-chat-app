@@ -127,14 +127,14 @@ const receivedMessage = (event) => {
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
-          db.ref('user/' + "fakeID").set({
+          db.ref('user/' + senderID).set({
             routes: data
           });
         })
-        db.ref('user/' + "fakeID").once('value', (snap) => {
+        db.ref('user/' + senderID).once('value', (snap) => {
           let routes = snap.val().routes
           let route = routes.splice(0, 1)
-          db.ref('user/' + "fakeID").update({
+          db.ref('user/' + senderID).update({
             routes
           });
           facebookChat.callSendApi(senderID, route)
