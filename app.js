@@ -139,7 +139,6 @@ const receivedMessage = (event) => {
           data.forEach((val) => {
             facebookChat.callSendApi(senderID, val)
           })
-          facebookChat.callSendApi(senderID, "This concludes our interaction.")
         })
         // db.ref('user/' + senderID).once('value', (snap) => {
         //   let routes = snap.val().routes
