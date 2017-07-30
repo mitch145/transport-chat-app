@@ -150,7 +150,7 @@ const receivedMessage = (event) => {
 }
 
 const receivedLocation = (event) => {
-  console.log(event.message.attachments)
+  console.log(event.message)
 }
 
 
