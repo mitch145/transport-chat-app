@@ -89,7 +89,7 @@ const receivedMessage = (event) => {
       console.log('LOOK_HERE', response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         facebookChat.callSendApi(senderID, "Please send your location")
-        db.ref('user/' + "nooooo").set({
+        db.ref('user/' + senderID).update({
           target: response.result.parameters.commgames_location
         });
       } else {
