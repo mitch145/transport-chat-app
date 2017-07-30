@@ -79,8 +79,9 @@ app.post('/translate', (req, res) => {
 })
 
 app.post('/maps', (req,res) => {
-  maps.findRoute("fishburners,+nsw", "central+station+nsw").then((data) => {
-    db.ref('user/' + "fakeID").set({
+  maps.findRoute("qld+central+station", "coolangatta").then((data) => {
+    console.log("routes", data)
+    db.ref('user/' + "nope").set({
       routes: data
     });
   })
@@ -131,19 +132,11 @@ const receivedMessage = (event) => {
         console.log("start location", response.result.parameters.commgames_location)
         maps.findRoute("qld+central+station", "coolangatta").then((data) => {
           console.log("routes", data)
-          db.ref('user/' + senderID).set({
+          db.ref('user/' + "nooooo").set({
             routes: data
           });
         })
-        db.ref('user/' + senderID).once('value', (snap) => {
-          let routes = snap.val().routes
-          let route = routes.splice(0, 1)
-          console.log("send a route", route)
-          db.ref('user/' + senderID).update({
-            routes
-          });
-          facebookChat.callSendApi(senderID, route)
-        })
+        
 
       } else {
         console.log("Outgoing (ENG)", response.result.fulfillment.speech)
