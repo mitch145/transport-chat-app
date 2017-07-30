@@ -79,7 +79,7 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
     db.ref('user/' + senderID).update({
-      lang: data.lang;
+      lang: data.lang
     });
 
     console.log("pre request")
@@ -117,7 +117,7 @@ const receivedLocation = (event) => {
   // console.log("start location", response.result.parameters.commgames_location)
   console.log("-=-=-=-=-=-=-")
   db.ref('user/' + event.sender.id).once("value", (snap) => {
-      facebookChat.callSendApi(event.sender.id, snap.val().target)
+      // facebookChat.callSendApi(event.sender.id, snap.val().target)
       maps.findRoute(origin, snap.val().target).then((data) => {
         db.ref('user/' + event.sender.id).set({
           routes: data
