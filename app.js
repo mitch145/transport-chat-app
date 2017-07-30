@@ -79,7 +79,7 @@ const receivedMessage = (event) => {
     console.log("Incoming (ENG)", text)
     lang = data.lang;
     db.ref('user/' + senderID).update({
-      lang: data.lang
+      lang
     });
 
     console.log("pre request")
@@ -91,7 +91,10 @@ const receivedMessage = (event) => {
     request.on('response', (response) => {
       console.log('LOOK_HERE', response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
-        facebookChat.callSendApi(senderID, "Please send your location")
+        translate.translate("Please send your location", lang).then((data) => {
+          facebookChat.callSendApi(senderID, data.text)
+        })
+        facebookChat.callSendApi(senderID, "")
         db.ref('user/' + senderID).update({
           target: response.result.parameters.commgames_location
         });
