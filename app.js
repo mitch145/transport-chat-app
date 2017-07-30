@@ -112,6 +112,7 @@ const receivedMessage = (event) => {
 const receivedLocation = (event) => {
   origin = `${event.message.attachments[0].payload.coordinates.lat},${event.message.attachments[0].payload.coordinates.long}`;
   // console.log("start location", response.result.parameters.commgames_location)
+  console.log("-=-=-=-=-=-=-")
   db.ref('user/' + event.sender.id).once("value", (snap) => {
       facebookChat.callSendApi(event.sender.id, snap.val().target)
   })
