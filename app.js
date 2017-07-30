@@ -126,7 +126,7 @@ const receivedMessage = (event) => {
     request.on('response', (response) => {
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
-        console.log("start location")
+        console.log("start location", response.result.parameters.commgames_location)
         maps.findRoute("qld+central+station", response.result.parameters.commgames_location).then((data) => {
           console.log("routes", data)
           db.ref('user/' + senderID).set({
