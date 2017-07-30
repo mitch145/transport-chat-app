@@ -127,7 +127,7 @@ const receivedMessage = (event) => {
       console.log('LOOK_HERE',response.result)
       if (response.result.action === 'location.send' && response.result.parameters.commgames_location) {
         console.log("start location")
-        maps.findRoute("fishburners,+nsw", response.result.parameters.commgames_location).then((data) => {
+        maps.findRoute("qld central station", response.result.parameters.commgames_location).then((data) => {
           console.log("routes", data)
           db.ref('user/' + senderID).set({
             routes: data
